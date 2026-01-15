@@ -1,0 +1,11 @@
+.horizontal {
+  align-self: stretch;
+  height: 1px;
+  background-color: #2C2C2C;
+}
+
+.vertical {
+  width: 1px;
+  align-self: stretch;
+  background-color: #2C2C2C;
+}

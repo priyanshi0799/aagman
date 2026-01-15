@@ -1,0 +1,25 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px;
+  background-color: #212121;
+  border: 1.5px solid #343434;
+  border-radius: 24px;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-xs);
+  color: var(--color-text-primary);
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+}
+
+.text {
+  white-space: nowrap;
+}

@@ -1,0 +1,25 @@
+.header {
+  display: flex;
+  justify-content: stretch;
+  align-items: stretch;
+  align-self: stretch;
+  padding: 16px 24px;
+  background-color: #1B1B1B;
+  border-bottom: 1px solid #313131;
+}
+
+.titleSection {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 241px;
+}
+
+.title {
+  font-family: var(--font-family-base);
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.4;
+  color: #F4F6FA;
+  margin: 0;
+}

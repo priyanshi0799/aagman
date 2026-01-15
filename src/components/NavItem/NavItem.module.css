@@ -1,0 +1,42 @@
+.navLink {
+  display: flex;
+  align-items: center;
+  align-self: stretch;
+  gap: 12px;
+  padding: 10px 12px;
+  background: none;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+  width: 100%;
+  text-align: left;
+}
+
+.navLink:hover {
+  background-color: #25262D;
+}
+
+.navLink.active {
+  background-color: #25262D;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.navLabel {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-sm);
+  color: var(--color-text-primary);
+}
+
+.navLink.active .navLabel {
+  color: #F4F6FA;
+}

@@ -1,0 +1,31 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: var(--color-bg-primary);
+}
+
+/* Message styling that's specific to content */
+.messageBlock {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+.messageSubBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.messageOption {
+  display: flex;
+  gap: var(--spacing-2);
+}
+
+.messageText {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-sm);
+  color: var(--color-text-secondary);
+}

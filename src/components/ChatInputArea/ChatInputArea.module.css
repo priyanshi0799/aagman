@@ -1,0 +1,122 @@
+.inputArea {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 0 100px 24px;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.inputField {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-2);
+  padding: 8px 16px;
+  background-color: var(--color-bg-tertiary);
+  border: 1px solid var(--color-border-primary);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.inputText {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-sm);
+  color: var(--color-text-secondary);
+}
+
+.brokerIcon {
+  width: 18px;
+  height: 18px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 4px;
+}
+
+.mainInputField {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+  padding: 16px;
+  background-color: var(--color-bg-secondary);
+  border: 1px solid var(--color-border-focus);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  min-height: 120px;
+}
+
+.messageInput {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--color-text-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-sm);
+}
+
+.messageInput::placeholder {
+  color: #8c9fbd;
+}
+
+.inputActions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.leftActions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+.actionText {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-regular);
+  color: var(--color-text-primary);
+}
+
+.iconButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  background-color: #2c2c2c;
+  border: 1px solid #363535;
+  border-radius: 24px;
+  cursor: pointer;
+  box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+}
+
+.iconButton:hover {
+  background-color: #333333;
+}
+
+.rightActions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.sendButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px;
+  background-color: #2c2c2c;
+  border: 1px solid #363535;
+  border-radius: 24px;
+  cursor: pointer;
+  box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+}
+
+.sendButton:hover {
+  background-color: #333333;
+}
