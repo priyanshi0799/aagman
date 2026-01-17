@@ -10,8 +10,13 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Aagman",
-  description: "Aagman application",
+  title: "Āagman - Your Multi-Agent Trading Team",
+  description: "TradeFlow AI powered by Āagman - Your intelligent orchestrator coordinating specialist trading agents for profile discovery, strategy design, stock hunting, and execution planning.",
+  icons: {
+    icon: [
+      { url: "/icon.svg", type: "image/svg+xml" },
+    ],
+  },
 };
 
 export default function RootLayout({
