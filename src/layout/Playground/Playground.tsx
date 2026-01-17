@@ -1,5 +1,5 @@
 import React from "react";
-import { EmptyState } from "@/components/EmptyState";
+import { EmptyState } from "@/widgets";
 import { PlaygroundIcon } from "@/assets/icons";
 import styles from "./Playground.module.css";
 

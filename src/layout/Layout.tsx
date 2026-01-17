@@ -24,7 +24,6 @@ export const Layout: React.FC = () => {
       const offsetX = e.clientX - mainRect.left;
       const percentage = ((mainRect.width - offsetX) / mainRect.width) * 100;
 
-      // Limit between 20% and 60%
       const clampedPercentage = Math.min(Math.max(percentage, 20), 60);
       setPlaygroundWidth(clampedPercentage);
     };

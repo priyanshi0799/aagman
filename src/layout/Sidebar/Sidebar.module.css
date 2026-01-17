@@ -91,7 +91,6 @@
 
 .collapsed .collapseButton {
   transform: translateY(-50%) rotate(180deg);
-  right: 12px;
 }
 
 .collapsed .logoSection {

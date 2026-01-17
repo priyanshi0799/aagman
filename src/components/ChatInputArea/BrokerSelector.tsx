@@ -4,23 +4,8 @@ import React, { useState, useRef, useEffect } from "react";
 import { Badge } from "@/widgets/Badge/Badge";
 import { ChevronDownIcon, ChevronUpIcon } from "@/assets/icons";
 import Image from "next/image";
+import { Broker, allBrokers } from "@/utils/data";
 import styles from "./ChatInputArea.module.css";
-
-interface Broker {
-  id: string;
-  name: string;
-  image: string;
-  isPrimary?: boolean;
-}
-
-const allBrokers: Broker[] = [
-  { id: "zerodha", name: "Zerodha", image: "/images/zerodha.png" },
-  { id: "groww", name: "Groww", image: "/images/groww.png" },
-  { id: "angelone", name: "AngleOne", image: "/images/angelOne.png" },
-  { id: "dhan", name: "Dhan", image: "/images/dhan.png" },
-  { id: "kotak", name: "Kotak Neo", image: "/images/kotak.png" },
-  { id: "icici", name: "ICICI Direct", image: "/images/icici.png" },
-];
 
 interface BrokerSelectorProps {
   broker?: string;
@@ -81,6 +66,33 @@ export const BrokerSelector: React.FC<BrokerSelectorProps> = ({
     (b) => !recentlyUsed.includes(b.name)
   );
 
+  const renderBrokerItem = (
+    broker: Broker,
+    index: number,
+    showPrimaryBadge: boolean = false,
+    imageSize: number = 20
+  ) => (
+    <button
+      key={broker.id}
+      className={`${styles.brokerItem} ${
+        showPrimaryBadge && index === 0 ? styles.primaryBroker : ""
+      }`}
+      onClick={() => handleBrokerSelect(broker.name)}
+    >
+      <Image
+        src={broker.image}
+        alt={broker.name}
+        width={imageSize}
+        height={imageSize}
+        className={styles.brokerLogo}
+      />
+      <span className={styles.brokerName}>{broker.name}</span>
+      {showPrimaryBadge && index === 0 && (
+        <span className={styles.primaryBadge}>Primary</span>
+      )}
+    </button>
+  );
+
   return (
     <div className={styles.brokerSelectorWrapper} ref={dropdownRef}>
       <div className={styles.inputField}>
@@ -112,47 +124,16 @@ export const BrokerSelector: React.FC<BrokerSelectorProps> = ({
         <div className={styles.brokerDropdown}>
           <div className={styles.dropdownSection}>
             <h3 className={styles.sectionTitle}>RECENTLY USED</h3>
-            {recentlyUsedBrokers.map((broker, index) => (
-              <button
-                key={broker.id}
-                className={`${styles.brokerItem} ${
-                  index === 0 ? styles.primaryBroker : ""
-                }`}
-                onClick={() => handleBrokerSelect(broker.name)}
-              >
-                <Image
-                  src={broker.image}
-                  alt={broker.name}
-                  width={40}
-                  height={40}
-                  className={styles.brokerLogo}
-                />
-                <span className={styles.brokerName}>{broker.name}</span>
-                {index === 0 && (
-                  <span className={styles.primaryBadge}>Primary</span>
-                )}
-              </button>
-            ))}
+            {recentlyUsedBrokers.map((broker, index) =>
+              renderBrokerItem(broker, index, true, 40)
+            )}
           </div>
 
           <div className={styles.dropdownSection}>
             <h3 className={styles.sectionTitle}>AVAILABLE BROKERS</h3>
-            {availableBrokers.map((broker) => (
-              <button
-                key={broker.id}
-                className={styles.brokerItem}
-                onClick={() => handleBrokerSelect(broker.name)}
-              >
-                <Image
-                  src={broker.image}
-                  alt={broker.name}
-                  width={20}
-                  height={20}
-                  className={styles.brokerLogo}
-                />
-                <span className={styles.brokerName}>{broker.name}</span>
-              </button>
-            ))}
+            {availableBrokers.map((broker, index) =>
+              renderBrokerItem(broker, index, false, 20)
+            )}
           </div>
         </div>
       )}

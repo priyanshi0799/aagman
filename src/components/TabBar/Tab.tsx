@@ -14,7 +14,7 @@ export const Tab: React.FC<TabProps> = ({ title, onClose }) => {
         <span className={styles.tabText}>{title}</span>
       </div>
       <button className={styles.closeBtn} onClick={onClose}>
-        <CloseIcon />
+        <CloseIcon className={styles.closeBtnIcon}/>
       </button>
     </div>
   );

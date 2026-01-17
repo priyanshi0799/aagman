@@ -8,7 +8,7 @@ interface ChatInputAreaProps {
   onMessageChange: (message: string) => void;
   onSend?: () => void;
   broker?: string;
-  onBrokerChange?: () => void;
+  onBrokerChange?: (broker: string) => void;
 }
 
 export const ChatInputArea: React.FC<ChatInputAreaProps> = ({

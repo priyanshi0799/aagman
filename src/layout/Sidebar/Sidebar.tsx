@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
-import { Logo } from "@/components/Logo";
+import { Logo } from "@/widgets";
 import { NavItem } from "@/components/NavItem";
-import { Divider } from "@/components/Divider";
+import { Divider } from "@/widgets";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { UserProfile } from "@/components/UserProfile";
 import {

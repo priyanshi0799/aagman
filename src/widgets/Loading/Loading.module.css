@@ -1,0 +1,42 @@
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-left: 32px;
+  width: 100%;
+  max-width: 600px;
+}
+
+.loadingBar {
+  height: 12px;
+  background: linear-gradient(
+    90deg,
+    rgba(79, 70, 229, 0.3) 0%,
+    rgba(79, 70, 229, 0.6) 50%,
+    rgba(79, 70, 229, 0.3) 100%
+  );
+  background-size: 200% 100%;
+  border-radius: 6px;
+  animation: shimmer 1.5s infinite;
+}
+
+.loadingBar1 {
+  width: 90%;
+}
+
+.loadingBar2 {
+  width: 70%;
+}
+
+.loadingBar3 {
+  width: 50%;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}

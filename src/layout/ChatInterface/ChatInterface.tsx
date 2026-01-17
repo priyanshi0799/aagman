@@ -9,6 +9,12 @@ import { TradeMonitoringModal } from "@/components/TradeMonitoringModal";
 import styles from "./ChatInterface.module.css";
 import { LogoIcon } from "@/assets/icons";
 import type { ChatMessage as ChatMessageType } from "@/types/message";
+import {
+  welcomeMessage,
+  generateBotResponse,
+  shouldOpenModal,
+  chatTiming,
+} from "@/utils/mockChatData";
 
 const INITIAL_MESSAGE = {
   id: "welcome",
@@ -24,6 +30,8 @@ export const ChatInterface: React.FC = () => {
   ]);
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [conversationStep, setConversationStep] = useState(0);
+  const [selectedBroker, setSelectedBroker] = useState("Zerodha");
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -49,59 +57,58 @@ export const ChatInterface: React.FC = () => {
     setMessage("");
     setIsLoading(true);
 
+    // Generate bot response based on conversation step
+    const { messages: botMessages, nextStep } = generateBotResponse(
+      message,
+      conversationStep
+    );
+
     // Simulate API call with delay (loading state)
     setTimeout(() => {
       setIsLoading(false);
 
-      // First, add the main response message
-      const botResponse: ChatMessageType = {
+      // Add the first message (main response)
+      const firstMessage: ChatMessageType = {
         id: (Date.now() + 1).toString(),
-        role: "assistant",
-        content:
-          "Great! To get you started on your trading journey, we need to discover your trading profile using our 3×3×3 framework. This will help us tailor everything to your style and goals.\n\nLet me connect you with our Profile Discovery Agent who will guide you through this quick process.",
-        timestamp: new Date(),
-      };
+        ...botMessages[0],
+      } as ChatMessageType;
 
-      setMessages((prev) => [...prev, botResponse]);
+      setMessages((prev) => [...prev, firstMessage]);
 
-      // After a brief delay, show the handoff message
-      setTimeout(() => {
-        const handoffMessage: ChatMessageType = {
-          id: (Date.now() + 2).toString(),
-          role: "assistant",
-          isHandoff: true,
-          content: "Handing off to Profile Discovery Agent...",
-        } as any;
-
-        setMessages((prev) => [...prev, handoffMessage]);
-
-        // After handoff animation (2 seconds), show the question with chips
+      // If there are more messages (handoff and question), add them with delays
+      if (botMessages.length > 1) {
         setTimeout(() => {
-          const questionMessage: ChatMessageType = {
-            id: (Date.now() + 3).toString(),
-            role: "assistant",
-            content:
-              "Welcome! Let me help you find your perfect trading style.\n\nFirst question: What's your main goal - Making Money, Saving Money, or Saving Time?",
-            timestamp: new Date(),
-            chips: ["Making Money", "Saving Money", "Saving Time"],
-            hideHeader: true,
-          };
+          // Add handoff message
+          const handoffMsg: ChatMessageType = {
+            id: (Date.now() + 2).toString(),
+            ...botMessages[1],
+          } as ChatMessageType;
 
-          setMessages((prev) => [...prev, questionMessage]);
-        }, 2000);
-      }, 500);
-    }, 2000);
+          setMessages((prev) => [...prev, handoffMsg]);
+
+          // After handoff animation, show the question
+          if (botMessages.length > 2) {
+            setTimeout(() => {
+              const questionMsg: ChatMessageType = {
+                id: (Date.now() + 3).toString(),
+                ...botMessages[2],
+              } as ChatMessageType;
+
+              setMessages((prev) => [...prev, questionMsg]);
+            }, chatTiming.handoffDuration);
+          }
+        }, chatTiming.handoffDelay);
+      }
+
+      setConversationStep(nextStep);
+    }, chatTiming.loadingDelay);
   };
 
   const handleChipClick = (chip: string) => {
     console.log("Chip clicked:", chip);
 
-    // Open modal for specific chips
-    if (
-      chip === "Quick and Active" ||
-      chip === "Patient and Steady" ||
-      chip === "Set and Forget"
-    ) {
+    // Check if this chip should open the modal
+    if (shouldOpenModal(chip)) {
       setIsModalOpen(true);
       return;
     }
@@ -117,23 +124,28 @@ export const ChatInterface: React.FC = () => {
     setMessages((prev) => [...prev, userSelection]);
     setIsLoading(true);
 
+    // Generate bot response based on conversation step
+    const { messages: botMessages, nextStep } = generateBotResponse(
+      chip,
+      conversationStep
+    );
+
     // Simulate API call with loading state
     setTimeout(() => {
       setIsLoading(false);
 
-      // Add the next question with new chips
-      const nextQuestion: ChatMessageType = {
-        id: (Date.now() + 1).toString(),
-        role: "assistant",
-        content:
-          "Great choice! Now, tell me—how would you describe your trading style?\n\nAre you more",
-        timestamp: new Date(),
-        chips: ["Quick and Active", "Patient and Steady", "Set and Forget"],
-        agentName: "{Profile Discovery Agent...}",
-      };
+      // Add the bot's next question/response
+      botMessages.forEach((botMsg, index) => {
+        const newMessage: ChatMessageType = {
+          id: (Date.now() + index + 1).toString(),
+          ...botMsg,
+        } as ChatMessageType;
 
-      setMessages((prev) => [...prev, nextQuestion]);
-    }, 2000);
+        setMessages((prev) => [...prev, newMessage]);
+      });
+
+      setConversationStep(nextStep);
+    }, chatTiming.loadingDelay);
   };
 
   return (
@@ -150,58 +162,65 @@ export const ChatInterface: React.FC = () => {
             <LogoIcon />
             <p className={styles.logoText}>Āagman</p>
           </div>
-          <div className={styles.messageBlock}>
-            <p className={styles.messageText}>
-              Welcome to TradeFlow AI - Your Multi-Agent Trading Team! 👋
-            </p>
-            <div className={styles.messageSubBlock}>
-              <p className={styles.messageText}>
-                I&apos;m your Orchestrator, and I coordinate our team of
-                specialist agents:
-              </p>
-            </div>
-            <p className={styles.messageText}>
-              🎯 Profile Discovery - Finds your perfect trading style (3×3×3)
-            </p>
-            <p className={styles.messageText}>
-              📊 Strategy Architect - Designs your trading strategy
-            </p>
-            <p className={styles.messageText}>
-              🔍 Stock Hunter - Scans for opportunities
-            </p>
-            <p className={styles.messageText}>
-              ⚡ Execution Planner - Creates risk-validated trade plans
-            </p>
-          </div>
 
-          <div className={styles.messageBlock}>
-            <p className={styles.messageText}>
-              To get started: Just tell me what you&apos;d like to do!
-            </p>
-            <div className={styles.messageSubBlock}>
-              <div className={styles.messageOption}>
-                <p className={styles.messageText}>
-                  New to trading? Say &quot;start&quot; or &quot;begin&quot;
-                </p>
-              </div>
-              <div className={styles.messageOption}>
-                <p className={styles.messageText}>
-                  Have experience? Tell me where you&apos;d like to jump in
-                </p>
-              </div>
-              <div className={styles.messageOption}>
-                <p className={styles.messageText}>
-                  Know what you want? Just ask!
-                </p>
-              </div>
-            </div>
-          </div>
+          {/* Render welcome message sections from mock data */}
+          {welcomeMessage.sections.map((section, index) => {
+            if (section.type === "greeting") {
+              return (
+                <div key={index} className={styles.messageBlock}>
+                  <p className={styles.messageText}>{section.content}</p>
+                </div>
+              );
+            }
 
-          <div className={styles.messageBlock}>
-            <p className={styles.messageText}>How can I help you today?</p>
-          </div>
+            if (section.type === "intro") {
+              return (
+                <div key={index} className={styles.messageBlock}>
+                  <div className={styles.messageSubBlock}>
+                    <p className={styles.messageText}>{section.content}</p>
+                  </div>
+                </div>
+              );
+            }
 
-          {/* Conversation Messages */}
+            if (section.type === "list" && "items" in section) {
+              return (
+                <div key={index} className={styles.messageBlock}>
+                  {section.items.map((item, itemIndex) => (
+                    <p key={itemIndex} className={styles.messageText}>
+                      {item}
+                    </p>
+                  ))}
+                </div>
+              );
+            }
+
+            if (section.type === "callToAction" && "options" in section) {
+              return (
+                <div key={index} className={styles.messageBlock}>
+                  <p className={styles.messageText}>{section.content}</p>
+                  <div className={styles.messageSubBlock}>
+                    {section.options.map((option, optionIndex) => (
+                      <div key={optionIndex} className={styles.messageOption}>
+                        <p className={styles.messageText}>{option}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              );
+            }
+
+            if (section.type === "question") {
+              return (
+                <div key={index} className={styles.messageBlock}>
+                  <p className={styles.messageText}>{section.content}</p>
+                </div>
+              );
+            }
+
+            return null;
+          })}
+
           {messages
             .filter((msg) => msg.id !== "welcome")
             .map((msg) => (
@@ -221,18 +240,21 @@ export const ChatInterface: React.FC = () => {
         </MessageList>
       </div>
 
-      {/* Input Area - Fixed at bottom */}
       <div className={styles.inputAreaFixed}>
         <ChatInputArea
           message={message}
           onMessageChange={setMessage}
           onSend={handleSendMessage}
+          broker={selectedBroker}
+          onBrokerChange={setSelectedBroker}
         />
       </div>
 
-      {/* Trade Monitoring Modal */}
       {isModalOpen && (
-        <TradeMonitoringModal onClose={() => setIsModalOpen(false)} />
+        <TradeMonitoringModal
+          onClose={() => setIsModalOpen(false)}
+          selectedBroker={selectedBroker}
+        />
       )}
     </div>
   );

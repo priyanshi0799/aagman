@@ -1,6 +1,6 @@
 import React from "react";
 import { LogoIcon, DotAnimationIcon } from "@/assets/icons";
-import { Chip } from "@/widgets";
+import { Chip, Loading } from "@/widgets";
 import styles from "./ChatMessage.module.css";
 
 interface ChatMessageProps {
@@ -31,11 +31,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
           <LogoIcon />
           <p className={styles.logoText}>Āagman</p>
         </div>
-        <div className={styles.loadingContainer}>
-          <div className={`${styles.loadingBar} ${styles.loadingBar1}`} />
-          <div className={`${styles.loadingBar} ${styles.loadingBar2}`} />
-          <div className={`${styles.loadingBar} ${styles.loadingBar3}`} />
-        </div>
+        <Loading />
       </>
     );
   }
@@ -59,7 +55,6 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
     return <div className={styles.userMessage}>{content}</div>;
   }
 
-  // Assistant message with same styling as welcome message
   return (
     <>
       {!hideHeader && (

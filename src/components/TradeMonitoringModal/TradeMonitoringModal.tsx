@@ -5,11 +5,7 @@ import ReactFlow, {
   Node,
   Edge,
   Position,
-  MarkerType,
   Handle,
-  BaseEdge,
-  EdgeLabelRenderer,
-  getSmoothStepPath,
 } from "reactflow";
 import "reactflow/dist/style.css";
 
@@ -27,43 +23,20 @@ import {
 } from "@/assets/icons";
 import styles from "./TradeMonitoringModal.module.css";
 import { BadgeEdge } from "@/widgets/ChartBadgeEdge/ChartBadgeEdge";
+import type { TradeMonitoringData } from "@/types/tradeMonitoring";
+import {
+  mockTradeMonitoringData,
+  mockFlowNodes,
+  mockFlowEdges,
+} from "@/utils/mockTradeData";
+import { dashedBlue, dashedGreen, arrowBlue, arrowGreen } from "@/utils/helper";
+import { allBrokers } from "@/utils/data";
 
 interface TradeMonitoringModalProps {
   onClose: () => void;
+  data?: TradeMonitoringData; // Optional: if not provided, uses mock data
+  selectedBroker?: string; // Selected broker name from chat input
 }
-
-/* ---------------------------------------------
-   Helpers
----------------------------------------------- */
-const dashedBlue = {
-  stroke: "#43556E",
-  strokeWidth: 2,
-  strokeDasharray: "5 5",
-};
-
-const dashedGreen = {
-  stroke: "#19E299",
-  strokeWidth: 2,
-  strokeDasharray: "5 5",
-};
-
-const arrowBlue = {
-  type: MarkerType.ArrowClosed,
-  color: "#43556E",
-  width: 20,
-  height: 20,
-};
-
-const arrowGreen = {
-  type: MarkerType.ArrowClosed,
-  color: "#19E299",
-  width: 20,
-  height: 20,
-};
-
-/* ---------------------------------------------
-   Custom Node Components
----------------------------------------------- */
 
 const StartNode = () => (
   <div className={styles.startLabel}>
@@ -75,347 +48,402 @@ const StartNode = () => (
 const EndNode = () => (
   <div className={styles.endLabel}>
     End
-    {/* ✅ Execution → End from left */}
     <Handle
       id="fromExecution"
       type="target"
       position={Position.Left}
       style={{ top: "50%" }}
     />
-    {/* ✅ Risk → End comes from bottom */}
     <Handle id="fromRisk" type="target" position={Position.Bottom} />
   </div>
 );
 
 const edgeTypes = { badge: BadgeEdge };
 
-const RiskValidationNode = () => (
-  <div className={`${styles.card} ${styles.cardCompleted}`}>
-    <Handle type="target" position={Position.Left} />
+const RiskValidationNode = ({ data }: { data: any }) => {
+  const { riskValidation } = data;
+  return (
+    <div className={`${styles.card} ${styles.cardCompleted}`}>
+      <Handle type="target" position={Position.Left} />
 
-    <div className={styles.cardHeader}>
-      <RiskIcon width={18} height={18} />
-      <h3 className={styles.cardTitle}>RISK VALIDATION</h3>
-    </div>
+      <div className={styles.cardHeader}>
+        <RiskIcon width={18} height={18} />
+        <h3 className={styles.cardTitle}>RISK VALIDATION</h3>
+      </div>
 
-    <div className={styles.cardBody}>
-      <div className={styles.cardRow}>
-        <span>• Capital Allocation: ₹3,00,000</span>
-        <GreenTickIcon width={16} height={16} />
-      </div>
-      <div className={styles.cardRow}>
-        <span>• Position Size: 10% of capital</span>
-        <GreenTickIcon width={16} height={16} />
-      </div>
-      <div className={styles.cardRow}>
-        <span>• Risk per Trade: 1% (₹3,000)</span>
-        <GreenTickIcon width={16} height={16} />
-      </div>
-      <div className={styles.cardRow}>
-        <span>• Risk–Reward Ratio: 1 : 2</span>
-        <GreenTickIcon width={16} height={16} />
-      </div>
-    </div>
-
-    <div className={styles.statusBadge}>
-      <SuccessCheckIcon width={16} height={16} />
-      <span>Completed</span>
-    </div>
-
-    <Handle type="source" position={Position.Right} />
-  </div>
-);
-
-const MonitoringNode = () => (
-  <div className={`${styles.card} ${styles.cardRunning}`}>
-    {/* ✅ only ONE target handle */}
-    <Handle type="target" position={Position.Left} />
-
-    <div className={styles.cardHeader}>
-      <BarChartIcon width={18} height={18} />
-      <h3 className={styles.cardTitle}>MONITORING</h3>
-    </div>
-
-    <div className={styles.cardBody}>
-      <div className={styles.cardRow}>
-        <span>• Condition</span>
-        <span>Nifty &gt; 26000</span>
-      </div>
-      <div className={styles.cardRow}>
-        <span>• Market Bias</span>
-        <span>Bullish</span>
-      </div>
-      <div className={styles.cardRow}>
-        <span>• Current</span>
-        <span>29000</span>
-      </div>
-      <div className={styles.cardRow}>
-        <span>• Target</span>
-        <span>26000</span>
-      </div>
-      <div className={styles.cardRow}>
-        <span>• Progress</span>
-        <div className={styles.progressBar}>
-          <div className={styles.progressBarTrack}>
-            <div
-              className={`${styles.parallelogram} ${styles.parallelogramFilled}`}
-            />
-            <div
-              className={`${styles.parallelogram} ${styles.parallelogramFilled}`}
-            />
-            <div
-              className={`${styles.parallelogram} ${styles.parallelogramFilled}`}
-            />
-            <div
-              className={`${styles.parallelogram} ${styles.parallelogramFilled}`}
-            />
-            <div
-              className={`${styles.parallelogram} ${styles.parallelogramFilled}`}
-            />
-            <div className={styles.parallelogram} />
-            <div className={styles.parallelogram} />
-            <div className={styles.parallelogram} />
-          </div>
-          <span className={styles.progressText}>63%</span>
+      <div className={styles.cardBody}>
+        <div className={styles.cardRow}>
+          <span>
+            • Capital Allocation: ₹
+            {riskValidation.capitalAllocation.toLocaleString()}
+          </span>
+          <GreenTickIcon width={16} height={16} />
+        </div>
+        <div className={styles.cardRow}>
+          <span>• Position Size: {riskValidation.positionSize}</span>
+          <GreenTickIcon width={16} height={16} />
+        </div>
+        <div className={styles.cardRow}>
+          <span>
+            • Risk per Trade: {riskValidation.riskPerTrade.percentage}% (₹
+            {riskValidation.riskPerTrade.amount.toLocaleString()})
+          </span>
+          <GreenTickIcon width={16} height={16} />
+        </div>
+        <div className={styles.cardRow}>
+          <span>• Risk–Reward Ratio: {riskValidation.riskRewardRatio}</span>
+          <GreenTickIcon width={16} height={16} />
         </div>
       </div>
+
+      <div className={styles.statusBadge}>
+        <SuccessCheckIcon width={16} height={16} />
+        <span>Completed</span>
+      </div>
+
+      <Handle type="source" position={Position.Right} />
     </div>
+  );
+};
 
-    <div className={styles.statusBadge}>
-      <div className={styles.spinner}></div>
-      <span>Running</span>
-    </div>
+const MonitoringNode = ({ data }: { data: any }) => {
+  const { monitoring } = data;
+  const filledSegments = Math.floor((monitoring.progress / 100) * 8);
 
-    {/* ✅ Single source to Entry Execution */}
-    <Handle type="source" position={Position.Right} />
-  </div>
-);
+  return (
+    <div className={`${styles.card} ${styles.cardRunning}`}>
+      <Handle type="target" position={Position.Left} />
 
-const EntryExecutionNode = () => (
-  <div className={`${styles.card} ${styles.cardPending}`}>
-    <Handle type="target" position={Position.Left} />
+      <div className={styles.cardHeader}>
+        <BarChartIcon width={18} height={18} />
+        <h3 className={styles.cardTitle}>MONITORING</h3>
+      </div>
 
-    <div className={styles.cardHeader}>
-      <TargetIcon width={18} height={18} />
-      <h3 className={styles.cardTitle}>ENTRY EXECUTION</h3>
-    </div>
-
-    <div className={styles.cardBody}>
-      <div className={styles.cardStockRow}>
-        <div className={styles.cardStockRowLeft}>
-          <Image
-            src="/images/reliance.png"
-            alt="RELIANCE"
-            width={32}
-            height={32}
-            className={styles.cardStockImg}
-          />
-          <div>
-            <div className={styles.cardStockName}>RELIANCE</div>
-            <div className={styles.cardStockExchange}>NSE EQ Intraday</div>
+      <div className={styles.cardBody}>
+        <div className={styles.cardRow}>
+          <span>• Condition</span>
+          <span>{monitoring.condition}</span>
+        </div>
+        {monitoring.marketBias && (
+          <div className={styles.cardRow}>
+            <span>• Market Bias</span>
+            <span>{monitoring.marketBias}</span>
+          </div>
+        )}
+        <div className={styles.cardRow}>
+          <span>• Current</span>
+          <span>{monitoring.current.toLocaleString()}</span>
+        </div>
+        <div className={styles.cardRow}>
+          <span>• Target</span>
+          <span>{monitoring.target.toLocaleString()}</span>
+        </div>
+        <div className={styles.cardRow}>
+          <span>• Progress</span>
+          <div className={styles.progressBar}>
+            <div className={styles.progressBarTrack}>
+              {[...Array(8)].map((_, i) => (
+                <div
+                  key={i}
+                  className={`${styles.parallelogram} ${
+                    i < filledSegments ? styles.parallelogramFilled : ""
+                  }`}
+                />
+              ))}
+            </div>
+            <span className={styles.progressText}>{monitoring.progress}%</span>
           </div>
         </div>
-        <div className={styles.cardBuyBadge}>
-          <ArrowUpIcon width={16} height={16} />
-          Buy
-        </div>
       </div>
 
-      <div className={styles.cardRow}>
-        <span>• Quantity</span>
-        <span>100 shares</span>
+      <div className={styles.statusBadge}>
+        <div className={styles.spinner}></div>
+        <span>Running</span>
       </div>
-      <div className={styles.cardRow}>
-        <span>• Trigger price</span>
-        <span>-</span>
-      </div>
-      <div className={styles.cardRow}>
-        <span>• Executed time</span>
-        <span className={styles.textError}>Not executed</span>
-      </div>
-      <div className={styles.cardRow}>
-        <span>• Investment</span>
-        <span>-</span>
-      </div>
+
+      <Handle type="source" position={Position.Right} />
     </div>
+  );
+};
 
-    <div className={styles.statusBadge}>
-      <PendingIcon width={16} height={16} />
-      <span>Pending</span>
-    </div>
+const EntryExecutionNode = ({ data }: { data: any }) => {
+  const { entryExecution } = data;
+  const ActionIcon =
+    entryExecution.action === "buy" ? ArrowUpIcon : ArrowDownIcon;
+  const badgeClass =
+    entryExecution.action === "buy"
+      ? styles.cardBuyBadge
+      : styles.cardSellBadge;
 
-    {/* ✅ Two source handles for branching */}
-    <Handle
-      id="toProfitMonitoring"
-      type="source"
-      position={Position.Right}
-      style={{ top: "30%" }}
-    />
-    <Handle
-      id="toRisk"
-      type="source"
-      position={Position.Right}
-      style={{ top: "70%" }}
-    />
-  </div>
-);
+  return (
+    <div className={`${styles.card} ${styles.cardPending}`}>
+      <Handle type="target" position={Position.Left} />
 
-const MonitoringProfitNode = () => (
-  <div className={`${styles.card} ${styles.cardPending}`}>
-    <Handle type="target" position={Position.Left} />
-
-    <div className={styles.cardHeader}>
-      <BarChartIcon width={18} height={18} />
-      <h3 className={styles.cardTitle}>MONITORING</h3>
-    </div>
-
-    <div className={styles.cardBody}>
-      <div className={styles.cardRow}>
-        <span>• Condition</span>
-        <span>Profit &gt; 15000</span>
+      <div className={styles.cardHeader}>
+        <TargetIcon width={18} height={18} />
+        <h3 className={styles.cardTitle}>ENTRY EXECUTION</h3>
       </div>
-      <div className={styles.cardRow}>
-        <span>• Current</span>
-        <span>0</span>
-      </div>
-      <div className={styles.cardRow}>
-        <span>• Target</span>
-        <span>15000</span>
-      </div>
-      <div className={styles.cardRow}>
-        <span>• Progress</span>
-        <div className={styles.progressBar}>
-          <div className={styles.progressBarTrack}>
-            <div className={styles.parallelogram} />
-            <div className={styles.parallelogram} />
-            <div className={styles.parallelogram} />
-            <div className={styles.parallelogram} />
-            <div className={styles.parallelogram} />
-            <div className={styles.parallelogram} />
-            <div className={styles.parallelogram} />
-            <div className={styles.parallelogram} />
+
+      <div className={styles.cardBody}>
+        <div className={styles.cardStockRow}>
+          <div className={styles.cardStockRowLeft}>
+            <Image
+              src={entryExecution.stock.logoUrl}
+              alt={entryExecution.stock.symbol}
+              width={32}
+              height={32}
+              className={styles.cardStockImg}
+            />
+            <div>
+              <div className={styles.cardStockName}>
+                {entryExecution.stock.symbol}
+              </div>
+              <div className={styles.cardStockExchange}>
+                {entryExecution.stock.exchange}
+              </div>
+            </div>
           </div>
-          <span className={styles.progressText}>0%</span>
-        </div>
-      </div>
-      <div className={styles.cardRow}>
-        <span>• Time</span>
-        <span>
-          <span className={styles.textSuccess}>0h </span>
-          <span className={styles.strategyText}>elapsed</span>
-        </span>
-      </div>
-    </div>
-
-    <div className={styles.statusBadge}>
-      <PendingIcon width={16} height={16} />
-      <span>Pending</span>
-    </div>
-
-    <Handle id="toExecution" type="source" position={Position.Right} />
-  </div>
-);
-
-const RiskNode = () => (
-  <div className={`${styles.card} ${styles.cardPending}`}>
-    {/* incoming from left */}
-    <Handle type="target" position={Position.Left} />
-
-    <div className={styles.cardHeader}>
-      <RiskShieldIcon width={18} height={18} />
-      <h3 className={styles.cardTitle}>RISK</h3>
-    </div>
-
-    <div className={styles.cardBody}>
-      <div className={styles.cardRow}>
-        <span>• Type</span>
-        <span>Stop Loss</span>
-      </div>
-      <div className={styles.cardRow}>
-        <span>• Level</span>
-        <span>2925</span>
-      </div>
-      <div className={styles.cardRow}>
-        <span>• Risk amount</span>
-        <span>3000</span>
-      </div>
-      <div className={styles.cardRow}>
-        <span>• Protects</span>
-        <div className={styles.protectsRow}>
-          <Image
-            src="/images/reliance.png"
-            alt="RELIANCE"
-            width={24}
-            height={24}
-            className={styles.miniLogo}
-          />
-          <span>RELIANCE</span>
-        </div>
-      </div>
-    </div>
-
-    <div className={styles.statusBadge}>
-      <PendingIcon width={16} height={16} />
-      <span>Pending</span>
-    </div>
-
-    {/* ✅ To End directly from Bottom */}
-    <Handle id="toEnd" type="source" position={Position.Bottom} />
-  </div>
-);
-
-const ExecutionNode = () => (
-  <div className={`${styles.card} ${styles.cardPending}`}>
-    <Handle type="target" position={Position.Left} />
-
-    <div className={styles.cardHeader}>
-      <TargetIcon width={18} height={18} />
-      <h3 className={styles.cardTitle}>EXECUTION</h3>
-    </div>
-
-    <div className={styles.cardBody}>
-      <div className={styles.cardStockRow}>
-        <div className={styles.cardStockRowLeft}>
-          <Image
-            src="/images/reliance.png"
-            alt="RELIANCE"
-            width={32}
-            height={32}
-            className={styles.cardStockImg}
-          />
-          <div>
-            <div className={styles.cardStockName}>RELIANCE</div>
-            <div className={styles.cardStockExchange}>NSE EQ Intraday</div>
+          <div className={badgeClass}>
+            <ActionIcon width={16} height={16} />
+            {entryExecution.action === "buy" ? "Buy" : "Sell"}
           </div>
         </div>
-        <div className={styles.cardSellBadge}>
-          <ArrowDownIcon width={16} height={16} />
-          Sell
+
+        <div className={styles.cardRow}>
+          <span>• Quantity</span>
+          <span>
+            {entryExecution.quantity} {entryExecution.quantityUnit}
+          </span>
+        </div>
+        <div className={styles.cardRow}>
+          <span>• Trigger price</span>
+          <span>
+            {entryExecution.triggerPrice
+              ? `₹${entryExecution.triggerPrice.toLocaleString()}`
+              : "-"}
+          </span>
+        </div>
+        <div className={styles.cardRow}>
+          <span>• Executed time</span>
+          <span className={entryExecution.executedTime ? "" : styles.textError}>
+            {entryExecution.executedTime || "Not executed"}
+          </span>
+        </div>
+        <div className={styles.cardRow}>
+          <span>• Investment</span>
+          <span>
+            {entryExecution.investment
+              ? `₹${entryExecution.investment.toLocaleString()}`
+              : "-"}
+          </span>
         </div>
       </div>
 
-      <div className={styles.cardRow}>
-        <span>• Quantity</span>
-        <span>100 shares</span>
+      <div className={styles.statusBadge}>
+        <PendingIcon width={16} height={16} />
+        <span>Pending</span>
       </div>
-      <div className={styles.cardRow}>
-        <span>• Price</span>
-        <span>-</span>
-      </div>
-      <div className={styles.cardRow}>
-        <span>• Executed time</span>
-        <span className={styles.textError}>Not executed</span>
-      </div>
-    </div>
 
-    <div className={styles.statusBadge}>
-      <PendingIcon width={16} height={16} />
-      <span>Pending</span>
+      <Handle
+        id="toProfitMonitoring"
+        type="source"
+        position={Position.Right}
+        style={{ top: "30%" }}
+      />
+      <Handle
+        id="toRisk"
+        type="source"
+        position={Position.Right}
+        style={{ top: "70%" }}
+      />
     </div>
+  );
+};
 
-    <Handle id="toEnd" type="source" position={Position.Right} />
-  </div>
-);
+const MonitoringProfitNode = ({ data }: { data: any }) => {
+  const { monitoringProfit } = data;
+  const filledSegments = Math.floor((monitoringProfit.progress / 100) * 8);
+
+  return (
+    <div className={`${styles.card} ${styles.cardPending}`}>
+      <Handle type="target" position={Position.Left} />
+
+      <div className={styles.cardHeader}>
+        <BarChartIcon width={18} height={18} />
+        <h3 className={styles.cardTitle}>MONITORING</h3>
+      </div>
+
+      <div className={styles.cardBody}>
+        <div className={styles.cardRow}>
+          <span>• Condition</span>
+          <span>{monitoringProfit.condition}</span>
+        </div>
+        <div className={styles.cardRow}>
+          <span>• Current</span>
+          <span>{monitoringProfit.current.toLocaleString()}</span>
+        </div>
+        <div className={styles.cardRow}>
+          <span>• Target</span>
+          <span>{monitoringProfit.target.toLocaleString()}</span>
+        </div>
+        <div className={styles.cardRow}>
+          <span>• Progress</span>
+          <div className={styles.progressBar}>
+            <div className={styles.progressBarTrack}>
+              {[...Array(8)].map((_, i) => (
+                <div
+                  key={i}
+                  className={`${styles.parallelogram} ${
+                    i < filledSegments ? styles.parallelogramFilled : ""
+                  }`}
+                />
+              ))}
+            </div>
+            <span className={styles.progressText}>
+              {monitoringProfit.progress}%
+            </span>
+          </div>
+        </div>
+        <div className={styles.cardRow}>
+          <span>• Time</span>
+          <span>
+            <span className={styles.textSuccess}>
+              {monitoringProfit.timeElapsed}{" "}
+            </span>
+            <span className={styles.strategyText}>elapsed</span>
+          </span>
+        </div>
+      </div>
+
+      <div className={styles.statusBadge}>
+        <PendingIcon width={16} height={16} />
+        <span>Pending</span>
+      </div>
+
+      <Handle id="toExecution" type="source" position={Position.Right} />
+    </div>
+  );
+};
+
+const RiskNode = ({ data }: { data: any }) => {
+  const { risk } = data;
+
+  return (
+    <div className={`${styles.card} ${styles.cardPending}`}>
+      <Handle type="target" position={Position.Left} />
+
+      <div className={styles.cardHeader}>
+        <RiskShieldIcon width={18} height={18} />
+        <h3 className={styles.cardTitle}>RISK</h3>
+      </div>
+
+      <div className={styles.cardBody}>
+        <div className={styles.cardRow}>
+          <span>• Type</span>
+          <span>{risk.type}</span>
+        </div>
+        <div className={styles.cardRow}>
+          <span>• Level</span>
+          <span>{risk.level.toLocaleString()}</span>
+        </div>
+        <div className={styles.cardRow}>
+          <span>• Risk amount</span>
+          <span>{risk.riskAmount.toLocaleString()}</span>
+        </div>
+        <div className={styles.cardRow}>
+          <span>• Protects</span>
+          <div className={styles.protectsRow}>
+            <Image
+              src={risk.protects.logoUrl}
+              alt={risk.protects.symbol}
+              width={24}
+              height={24}
+              className={styles.miniLogo}
+            />
+            <span>{risk.protects.symbol}</span>
+          </div>
+        </div>
+      </div>
+
+      <div className={styles.statusBadge}>
+        <PendingIcon width={16} height={16} />
+        <span>Pending</span>
+      </div>
+
+      <Handle id="toEnd" type="source" position={Position.Bottom} />
+    </div>
+  );
+};
+
+const ExecutionNode = ({ data }: { data: any }) => {
+  const { execution } = data;
+  const ActionIcon = execution.action === "buy" ? ArrowUpIcon : ArrowDownIcon;
+  const badgeClass =
+    execution.action === "buy" ? styles.cardBuyBadge : styles.cardSellBadge;
+
+  return (
+    <div className={`${styles.card} ${styles.cardPending}`}>
+      <Handle type="target" position={Position.Left} />
+
+      <div className={styles.cardHeader}>
+        <TargetIcon width={18} height={18} />
+        <h3 className={styles.cardTitle}>EXECUTION</h3>
+      </div>
+
+      <div className={styles.cardBody}>
+        <div className={styles.cardStockRow}>
+          <div className={styles.cardStockRowLeft}>
+            <Image
+              src={execution.stock.logoUrl}
+              alt={execution.stock.symbol}
+              width={32}
+              height={32}
+              className={styles.cardStockImg}
+            />
+            <div>
+              <div className={styles.cardStockName}>
+                {execution.stock.symbol}
+              </div>
+              <div className={styles.cardStockExchange}>
+                {execution.stock.exchange}
+              </div>
+            </div>
+          </div>
+          <div className={badgeClass}>
+            <ActionIcon width={16} height={16} />
+            {execution.action === "buy" ? "Buy" : "Sell"}
+          </div>
+        </div>
+
+        <div className={styles.cardRow}>
+          <span>• Quantity</span>
+          <span>
+            {execution.quantity} {execution.quantityUnit}
+          </span>
+        </div>
+        <div className={styles.cardRow}>
+          <span>• Price</span>
+          <span>
+            {execution.price ? `₹${execution.price.toLocaleString()}` : "-"}
+          </span>
+        </div>
+        <div className={styles.cardRow}>
+          <span>• Executed time</span>
+          <span className={execution.executedTime ? "" : styles.textError}>
+            {execution.executedTime || "Not executed"}
+          </span>
+        </div>
+      </div>
+
+      <div className={styles.statusBadge}>
+        <PendingIcon width={16} height={16} />
+        <span>Pending</span>
+      </div>
+
+      <Handle id="toEnd" type="source" position={Position.Right} />
+    </div>
+  );
+};
 
 const nodeTypes = {
   start: StartNode,
@@ -433,7 +461,23 @@ const nodeTypes = {
 ---------------------------------------------- */
 export const TradeMonitoringModal: React.FC<TradeMonitoringModalProps> = ({
   onClose,
+  data = mockTradeMonitoringData, // Default to mock data if not provided
+  selectedBroker = "Zerodha", // Default broker if not provided
 }) => {
+  // Get broker info from selected broker name
+  const brokerInfo =
+    allBrokers.find((b) => b.name === selectedBroker) || allBrokers[0];
+
+  // Update data with selected broker
+  const modalData = {
+    ...data,
+    broker: {
+      id: brokerInfo.id,
+      name: brokerInfo.name,
+      logoUrl: brokerInfo.image,
+    },
+  };
+
   // Close modal on Escape key press
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
@@ -449,146 +493,59 @@ export const TradeMonitoringModal: React.FC<TradeMonitoringModalProps> = ({
     };
   }, [onClose]);
 
+  // Convert mock flow nodes to React Flow format with data
   const nodes: Node[] = useMemo(
-    () => [
-      {
-        id: "start",
-        type: "start",
-        position: { x: 63, y: 344.5 },
-        data: {},
-      },
-      {
-        id: "riskValidation",
-        type: "riskValidation",
-        position: { x: 230, y: 285 },
-        data: {},
-      },
-      {
-        id: "monitoring",
-        type: "monitoring",
-        position: { x: 677, y: 273 },
-        data: {},
-      },
-      {
-        id: "entryExecution",
-        type: "entryExecution",
-        position: { x: 1124, y: 261 },
-        data: {},
-      },
-      {
-        id: "monitoringProfit",
-        type: "monitoringProfit",
-        position: { x: 1647, y: 111 },
-        data: {},
-      },
-      {
-        id: "risk",
-        type: "risk",
-        position: { x: 1647, y: 439 },
-        data: {},
-      },
-      {
-        id: "execution",
-        type: "execution",
-        position: { x: 2212, y: 265 },
-        data: {},
-      },
-      {
-        id: "end",
-        type: "end",
-        position: { x: 2659, y: 338 },
-        data: {},
-      },
-    ],
-    []
+    () =>
+      mockFlowNodes.map((node) => ({
+        id: node.id,
+        type: node.type,
+        position: node.position,
+        data: {
+          riskValidation: modalData.riskValidation,
+          monitoring: modalData.monitoring,
+          entryExecution: modalData.entryExecution,
+          monitoringProfit: modalData.monitoringProfit,
+          risk: modalData.risk,
+          execution: modalData.execution,
+        },
+      })),
+    [modalData]
   );
 
+  // Convert mock flow edges to React Flow format with styling
   const edges: Edge[] = useMemo(
-    () => [
-      {
-        id: "e-start-riskValidation",
-        source: "start",
-        target: "riskValidation",
-        type: "straight",
-        style: dashedGreen,
-        markerEnd: arrowGreen,
-      },
-      {
-        id: "e-riskValidation-monitoring",
-        source: "riskValidation",
-        target: "monitoring",
-        type: "straight",
-        style: dashedGreen,
-        markerEnd: arrowGreen,
-      },
-      {
-        id: "e-monitoring-entryExecution",
-        source: "monitoring",
-        target: "entryExecution",
-        type: "straight",
-        animated: false,
-        style: dashedBlue,
-        markerEnd: arrowBlue,
-      },
-      {
-        id: "e-entryExecution-monitoringProfit",
-        source: "entryExecution",
-        sourceHandle: "toProfitMonitoring",
-        target: "monitoringProfit",
-        type: "smoothstep",
+    () =>
+      mockFlowEdges.map((edge) => {
+        // Determine style based on edge connections
+        const isGreenEdge =
+          edge.id === "e-start-riskValidation" ||
+          edge.id === "e-riskValidation-monitoring";
 
-        style: dashedBlue,
-        markerEnd: arrowBlue,
-      },
-      {
-        id: "e-monitoringProfit-execution",
-        source: "monitoringProfit",
-        sourceHandle: "toExecution",
-        target: "execution",
-        type: "badge",
-        data: {
-          label: "PROFIT TARGET",
-          padding: 9,
-          paddingLeft: 12,
-        },
-        style: dashedBlue,
-        markerEnd: arrowBlue,
-      },
-      {
-        id: "e-entryExecution-risk",
-        source: "entryExecution",
-        sourceHandle: "toRisk",
-        target: "risk",
-        type: "badge",
-        data: {
-          label: "PROTECTION",
-          padding: 9,
-          paddingLeft: 12,
-        },
-        style: dashedBlue,
-        markerEnd: arrowBlue,
-      },
-      {
-        id: "e-execution-end",
-        source: "execution",
-        sourceHandle: "toEnd",
-        target: "end",
-        targetHandle: "fromExecution",
-        type: "straight",
-        style: dashedBlue,
-        markerEnd: arrowBlue,
-      },
-      {
-        id: "e-risk-end",
-        source: "risk",
-        sourceHandle: "toEnd",
-        target: "end",
-        targetHandle: "fromRisk",
-        type: "step",
-        style: dashedBlue,
-        markerEnd: arrowBlue,
-      },
-    ],
+        // Add label data for specific edges
+        const edgeData =
+          edge.label === "PROFIT TARGET" || edge.label === "PROTECTION"
+            ? {
+                label: edge.label,
+                padding: 9,
+                paddingLeft: 12,
+              }
+            : undefined;
+
+        // Use badge type for labeled edges
+        const edgeType =
+          edge.label === "PROFIT TARGET" || edge.label === "PROTECTION"
+            ? "badge"
+            : edge.type;
+
+        return {
+          ...edge,
+          type: edgeType,
+          data: edgeData,
+          style: isGreenEdge ? dashedGreen : dashedBlue,
+          markerEnd: isGreenEdge ? arrowGreen : arrowBlue,
+          animated: false,
+        };
+      }),
     []
   );
 
@@ -598,13 +555,25 @@ export const TradeMonitoringModal: React.FC<TradeMonitoringModalProps> = ({
         <div className={styles.container}>
           {/* Header */}
           <div className={styles.header}>
-            <h2 className={styles.headerTitle}>Monitoring Details</h2>
+            <h2 className={styles.headerTitle}>{modalData.title}</h2>
             <div className={styles.tradeBadge}>
               <span className={styles.activeDot}></span>
-              <span className={styles.tradeActiveText}>Trade Active</span>
+              <span className={styles.tradeActiveText}>
+                {modalData.tradeStatus === "active"
+                  ? "Trade Active"
+                  : modalData.tradeStatus === "completed"
+                  ? "Trade Completed"
+                  : modalData.tradeStatus === "paused"
+                  ? "Trade Paused"
+                  : "Trade Stopped"}
+              </span>
             </div>
             <button className={styles.closeButton} onClick={onClose}>
-              <CloseIcon width={20} height={20} />
+              <CloseIcon
+                width={20}
+                height={20}
+                className={styles.closeButtonIcon}
+              />
             </button>
           </div>
 
@@ -615,39 +584,43 @@ export const TradeMonitoringModal: React.FC<TradeMonitoringModalProps> = ({
               {/* Top Row */}
               <div className={styles.topRow}>
                 <div className={styles.leftColumn}>
-                  <p className={styles.description}>
-                    Find and trade a high-volume breakout in RELIANCE
-                  </p>
+                  <p className={styles.description}>{modalData.description}</p>
                   <div className={styles.stockInfo}>
                     <Image
-                      src="/images/reliance.png"
-                      alt="RELIANCE"
+                      src={modalData.stock.logoUrl}
+                      alt={modalData.stock.symbol}
                       width={32}
                       height={32}
                       className={styles.stockLogo}
                     />
                     <div className={styles.stockDetails}>
-                      <div className={styles.stockName}>RELIANCE</div>
+                      <div className={styles.stockName}>
+                        {modalData.stock.symbol}
+                      </div>
                       <div className={styles.stockExchange}>
-                        NSE EQ Intraday
+                        {modalData.stock.exchange}
                       </div>
                     </div>
                   </div>
                 </div>
 
                 <div className={styles.rightColumn}>
-                  <p className={styles.dateTime}>19 Aug 2025, 14:13</p>
+                  <p className={styles.dateTime}>{modalData.timestamp}</p>
                   <div className={styles.badges}>
-                    <span className={styles.buyBadge}>Buy</span>
+                    <span className={styles.buyBadge}>
+                      {modalData.action === "buy" ? "Buy" : "Sell"}
+                    </span>
                     <div className={styles.brokerBadge}>
                       <Image
-                        src="/images/zerodha.png"
-                        alt="Zerodha"
+                        src={modalData.broker.logoUrl}
+                        alt={modalData.broker.name}
                         width={16}
                         height={16}
                         className={styles.brokerLogo}
                       />
-                      <span className={styles.brokerName}>Zerodha</span>
+                      <span className={styles.brokerName}>
+                        {modalData.broker.name}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -664,9 +637,9 @@ export const TradeMonitoringModal: React.FC<TradeMonitoringModalProps> = ({
                   <div className={styles.strategyContent}>
                     <div className={styles.strategyLabel}>Strategy</div>
                     <div className={styles.strategyText}>
-                      High-Volume Breakout
+                      {modalData.strategy.name}
                       <br />
-                      Broke above ₹2,950 with 220% volume
+                      {modalData.strategy.description}
                     </div>
                   </div>
                 </div>
@@ -674,17 +647,23 @@ export const TradeMonitoringModal: React.FC<TradeMonitoringModalProps> = ({
                 <div className={styles.pricesSection}>
                   <div className={styles.priceBox}>
                     <div className={styles.priceLabel}>Entry Price</div>
-                    <div className={styles.priceValue}>₹2,955</div>
+                    <div className={styles.priceValue}>
+                      ₹{modalData.priceLevel.entry.toLocaleString()}
+                    </div>
                   </div>
                   <div className={styles.priceDivider}></div>
                   <div className={styles.priceBox}>
                     <div className={styles.priceLabel}>Stop Loss</div>
-                    <div className={styles.priceValue}>₹2,925</div>
+                    <div className={styles.priceValue}>
+                      ₹{modalData.priceLevel.stopLoss.toLocaleString()}
+                    </div>
                   </div>
                   <div className={styles.priceDivider}></div>
                   <div className={styles.priceBox}>
                     <div className={styles.priceLabel}>Target Price</div>
-                    <div className={styles.priceValue}>₹3,050</div>
+                    <div className={styles.priceValue}>
+                      ₹{modalData.priceLevel.target.toLocaleString()}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -717,7 +696,6 @@ export const TradeMonitoringModal: React.FC<TradeMonitoringModalProps> = ({
             </div>
           </div>
 
-          {/* Footer */}
           <div className={styles.footer}>
             <button className={styles.btnSecondary}>Stop Monitoring</button>
             <button className={styles.btnPrimary}>Pause Monitoring</button>
