@@ -1,0 +1,28 @@
+/* 
+ * SAFARI FALLBACK FIX
+ * If dashed arrows still don't work, add this to TradeMonitoringModal.module.css
+ */
+
+/* Safari only - use solid lines instead of dashed */
+@media not all and (min-resolution:.001dpcm) {
+  @supports (-webkit-appearance:none) {
+    .flowContainer :global(.react-flow__edge-path) {
+      stroke-dasharray: none !important;
+      /* This will make lines solid in Safari only */
+    }
+  }
+}
+
+/* Alternative: Detect Safari and use different edge type */
+@supports (-webkit-hyphens:none) {
+  .flowContainer :global(.react-flow__edge-path) {
+    /* Safari-specific overrides */
+    stroke-dasharray: 8 3 !important;
+    stroke-width: 3 !important;
+  }
+  
+  .flowContainer :global(marker) {
+    transform: scale(1.5);
+    transform-origin: center;
+  }
+}

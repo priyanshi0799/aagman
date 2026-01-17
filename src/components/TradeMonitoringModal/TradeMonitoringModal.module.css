@@ -375,16 +375,16 @@
     /* Force Safari to render the path properly */
     vector-effect: non-scaling-stroke;
   }
-  
+
   .flowContainer :global(marker path) {
     shape-rendering: geometricPrecision;
     vector-effect: non-scaling-stroke;
   }
-  
+
   .flowContainer :global(marker) {
     overflow: visible !important;
   }
-  
+
   /* Ensure markers are rendered */
   .flowContainer :global(.react-flow__edges) {
     isolation: isolate;
