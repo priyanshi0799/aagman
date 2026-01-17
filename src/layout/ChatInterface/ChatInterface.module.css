@@ -29,3 +29,18 @@
   line-height: var(--line-height-sm);
   color: var(--color-text-secondary);
 }
+
+.logoText {
+  color: #dee4f0;
+  font-size: 12px;
+  font-style: italic;
+  font-weight: 400;
+  margin: 0;
+}
+
+.flexWrapper {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 16px;
+}

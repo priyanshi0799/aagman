@@ -5,6 +5,11 @@
   height: 100vh;
   background-color: var(--color-bg-primary);
   border-right: 1px solid var(--color-border-secondary);
+  transition: width 0.3s ease-in-out;
+}
+
+.sidebar.collapsed {
+  width: fit-content;
 }
 
 .profile {
@@ -15,6 +20,15 @@
   padding: 20px 24px;
 }
 
+.logoSection {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 20px 24px;
+  gap: 8px;
+  position: relative;
+}
+
 .navigation {
   display: flex;
   flex-direction: column;
@@ -22,6 +36,11 @@
   gap: 8px;
   padding: 24px 24px 0px;
   flex: 1;
+  transition: padding 0.3s ease-in-out;
+}
+
+.collapsed .navigation {
+  padding: 24px;
 }
 
 .footer {
@@ -30,4 +49,53 @@
   align-self: stretch;
   gap: 8px;
   padding: 24px;
+  transition: padding 0.3s ease-in-out, align-items 0.3s ease-in-out;
+  overflow: hidden;
+}
+
+.collapsed .footer {
+  padding: 24px 12px;
+  align-items: center;
+}
+
+.fullLogo {
+  width: 75px;
+  height: 20px;
+  margin-left: 6px;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.collapseButton {
+  position: absolute;
+  right: -12px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 4px;
+  cursor: pointer;
+  color: #c0c0c0;
+  transition: color 0.2s, right 0.3s ease-in-out;
+  flex-shrink: 0;
+  z-index: 10;
+  background-color: #161a23;
+  border: 1px solid #5c5f65;
+  border-radius: 8px;
+}
+
+.collapseButton:hover {
+  color: var(--color-text-primary);
+}
+
+.collapsed .collapseButton {
+  transform: translateY(-50%) rotate(180deg);
+  right: 12px;
+}
+
+.collapsed .logoSection {
+  justify-content: center;
+  padding: 20px 12px;
 }

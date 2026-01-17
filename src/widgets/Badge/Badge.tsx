@@ -1,5 +1,5 @@
-import React from 'react';
-import styles from './Badge.module.css';
+import React from "react";
+import styles from "./Badge.module.css";
 
 interface BadgeProps {
   children: React.ReactNode;
@@ -7,7 +7,11 @@ interface BadgeProps {
   className?: string;
 }
 
-export const Badge: React.FC<BadgeProps> = ({ children, icon, className = '' }) => {
+export const Badge: React.FC<BadgeProps> = ({
+  children,
+  icon,
+  className = "",
+}) => {
   return (
     <div className={`${styles.badge} ${className}`}>
       {icon && <span className={styles.icon}>{icon}</span>}

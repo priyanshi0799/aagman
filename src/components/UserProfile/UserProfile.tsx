@@ -6,6 +6,7 @@ interface UserProfileProps {
   avatar?: string;
   initials?: string;
   onClick?: () => void;
+  hideLabel?: boolean;
 }
 
 export const UserProfile: React.FC<UserProfileProps> = ({
@@ -13,11 +14,12 @@ export const UserProfile: React.FC<UserProfileProps> = ({
   avatar,
   initials,
   onClick,
+  hideLabel = false,
 }) => {
   const displayInitials = initials || name.charAt(0).toUpperCase();
 
   return (
-    <div className={styles.userProfile} onClick={onClick}>
+    <div className={styles.userProfile} onClick={onClick} title={hideLabel ? name : undefined}>
       <div className={styles.avatar}>
         {avatar ? (
           <img src={avatar} alt={name} className={styles.avatarImage} />
@@ -25,7 +27,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({
           <span className={styles.initials}>{displayInitials}</span>
         )}
       </div>
-      <span className={styles.userName}>{name}</span>
+      {!hideLabel && <span className={styles.userName}>{name}</span>}
     </div>
   );
 };

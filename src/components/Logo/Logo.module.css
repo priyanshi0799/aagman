@@ -1,17 +1,13 @@
 .logoWrap {
   display: flex;
   align-items: center;
-  gap: 8px;
-}
-
-.logoIcon {
-  display: flex;
-  align-items: center;
   justify-content: center;
+  width: 100%;
 }
 
-.logoText {
-  font-size: var(--font-size-base);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-text-primary);
+.fullLogo {
+  width: 100%;
+  height: auto;
+  max-width: 230px;
+  object-fit: contain;
 }

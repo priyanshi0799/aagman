@@ -1,6 +1,7 @@
 .navLink {
   display: flex;
   align-items: center;
+  justify-content: flex-start;
   align-self: stretch;
   gap: 12px;
   padding: 10px 12px;
@@ -8,17 +9,24 @@
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  transition: background-color var(--transition-fast);
+  transition: background-color var(--transition-fast),
+    justify-content 0.3s ease-in-out, padding 0.3s ease-in-out;
   width: 100%;
   text-align: left;
 }
 
+/* Centered layout when label is hidden (collapsed state) */
+.navLink:has(.icon):not(:has(.navLabel)) {
+  justify-content: center;
+  padding: 10px;
+}
+
 .navLink:hover {
-  background-color: #25262D;
+  background-color: #25262d;
 }
 
 .navLink.active {
-  background-color: #25262D;
+  background-color: #25262d;
 }
 
 .icon {
@@ -28,6 +36,7 @@
   width: 24px;
   height: 24px;
   flex-shrink: 0;
+  color: #dee4f0;
 }
 
 .navLabel {
@@ -35,8 +44,11 @@
   font-weight: var(--font-weight-regular);
   line-height: var(--line-height-sm);
   color: var(--color-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .navLink.active .navLabel {
-  color: #F4F6FA;
+  color: #f4f6fa;
 }

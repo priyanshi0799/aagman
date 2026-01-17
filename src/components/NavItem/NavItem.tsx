@@ -6,6 +6,7 @@ interface NavItemProps {
   icon?: React.ReactNode;
   isActive?: boolean;
   onClick?: () => void;
+  hideLabel?: boolean;
 }
 
 export const NavItem: React.FC<NavItemProps> = ({
@@ -13,14 +14,16 @@ export const NavItem: React.FC<NavItemProps> = ({
   icon,
   isActive = false,
   onClick,
+  hideLabel = false,
 }) => {
   return (
     <button
       className={`${styles.navLink} ${isActive ? styles.active : ""}`}
       onClick={onClick}
+      title={hideLabel ? label : undefined}
     >
       {icon && <span className={styles.icon}>{icon}</span>}
-      <span className={styles.navLabel}>{label}</span>
+      {!hideLabel && <span className={styles.navLabel}>{label}</span>}
     </button>
   );
 };

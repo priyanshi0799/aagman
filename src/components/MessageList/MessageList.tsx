@@ -8,9 +8,9 @@ interface MessageListProps {
 export const MessageList: React.FC<MessageListProps> = ({ children }) => {
   return (
     <div className={styles.body}>
-      <div className={styles.messagesContainer}>
-        <div className={styles.messages}>{children}</div>
-      </div>
+      {/* <div className={styles.messagesContainer}> */}
+      <div className={styles.messages}>{children}</div>
+      {/* </div> */}
     </div>
   );
 };

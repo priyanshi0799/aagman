@@ -3,8 +3,8 @@
   justify-content: stretch;
   align-items: stretch;
   align-self: stretch;
-  padding: 16px 24px;
-  background-color: #1B1B1B;
+  padding: 18px 24px;
+  background-color: #1b1b1b;
   border-bottom: 1px solid #313131;
 }
 
@@ -16,11 +16,10 @@
 }
 
 .title {
-  font-family: var(--font-family-base);
   font-size: 20px;
   font-weight: 700;
   line-height: 1.4;
-  color: #F4F6FA;
+  color: #f4f6fa;
   margin: 0;
 }
 

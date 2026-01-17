@@ -1,26 +1,20 @@
 .inputArea {
   display: flex;
   flex-direction: column;
-  gap: 6px;
   padding: 0 100px 24px;
-}
-
-.inputGroup {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
 }
 
 .inputField {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--spacing-2);
   padding: 8px 16px;
   background-color: var(--color-bg-tertiary);
   border: 1px solid var(--color-border-primary);
-  border-radius: var(--radius-lg);
+  border-top-left-radius: var(--radius-lg);
+  border-top-right-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
+  border-bottom: none;
 }
 
 .inputText {
@@ -31,10 +25,120 @@
 }
 
 .brokerIcon {
-  width: 18px;
-  height: 18px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border-radius: 4px;
+  object-fit: contain;
+}
+
+.badgeButton {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+  font-size: inherit;
+  padding: 0;
+  flex: 1;
+}
+
+.brokerSelectorWrapper {
+  position: relative;
+}
+
+.brokerDropdown {
+  position: absolute;
+  bottom: calc(100% + -4px);
+  right: 0;
+  background-color: #2a2a2a;
+  border: 1px solid #343434;
+  border-radius: 8px;
+  padding: 8px 6px;
+  z-index: 1000;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 0 4px 0 rgba(0, 0, 0, 0.08);
+  max-height: 500px;
+  overflow-y: auto;
+  max-width: 230px;
+  animation: dropdownFadeIn 0.2s ease-out;
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdownSection {
+  margin-bottom: 8px;
+}
+
+.dropdownSection:last-child {
+  margin-bottom: 0;
+}
+
+.sectionTitle {
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 24px;
+  color: #6d82a6;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.brokerItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 8px;
+  background-color: transparent;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  text-align: left;
+}
+
+.brokerItem:hover {
+  background-color: #343434;
+}
+
+.primaryBroker {
+  background-color: #2d3e38;
+}
+
+.primaryBroker:hover {
+  background-color: #344440;
+}
+
+.brokerLogo {
+  width: 20px;
+  height: 20px;
+  border-radius: 8px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.brokerName {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+}
+
+.primaryBadge {
+  padding: 2px 6px;
+  background-color: rgba(240, 249, 255, 0.08);
+  color: #19e299;
+  font-size: 8px;
+  font-weight: 400;
+  border-radius: 6px;
+  margin-left: 8px;
 }
 
 .mainInputField {
@@ -78,11 +182,29 @@
 
 .actionText {
   font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-regular);
-  color: var(--color-text-primary);
+  font-weight: 400;
+  color: #fff;
 }
 
-.iconButton {
+.plusButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  background-color: #2c2c2c;
+  border: 1px solid #363535;
+  border-radius: 50%;
+  cursor: pointer;
+  color: #fff;
+}
+
+.plusButton:hover {
+  background-color: #444444;
+}
+
+.languageButton {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -92,31 +214,64 @@
   border: 1px solid #363535;
   border-radius: 24px;
   cursor: pointer;
-  box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+  color: #fff;
+}
+
+.languageButton:hover {
+  background-color: #444444;
+}
+
+.iconButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  background-color: transparent;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  color: var(--color-text-primary);
 }
 
 .iconButton:hover {
-  background-color: #333333;
-}
-
-.rightActions {
-  display: flex;
-  align-items: center;
-  gap: 16px;
+  background-color: #2a2a2a;
 }
 
 .sendButton {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 8px;
-  background-color: #2c2c2c;
-  border: 1px solid #363535;
-  border-radius: 24px;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  background-color: var(--color-accent-primary);
+  border: none;
+  border-radius: 50%;
   cursor: pointer;
-  box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+  color: #000000;
+  transition: opacity 0.2s;
 }
 
 .sendButton:hover {
-  background-color: #333333;
+  opacity: 0.9;
+}
+
+.rightActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.inputGroup {
+  background-color: var(--color-bg-tertiary);
+}
+
+.flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex: 1;
+  gap: 4px;
 }

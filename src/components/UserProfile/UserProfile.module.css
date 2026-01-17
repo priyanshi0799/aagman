@@ -1,8 +1,15 @@
 .userProfile {
   display: flex;
   align-items: center;
+  justify-content: flex-start;
   gap: 8px;
   cursor: pointer;
+  transition: justify-content 0.3s ease-in-out;
+}
+
+/* Centered layout when label is hidden */
+.userProfile:not(:has(.userName)) {
+  justify-content: center;
 }
 
 .avatar {

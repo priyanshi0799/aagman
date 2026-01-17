@@ -19,7 +19,7 @@
 .chatSection {
   display: flex;
   flex-direction: column;
-  flex: 1;
+  flex: 2;
   height: 100%;
   background-color: var(--color-bg-primary);
   overflow: hidden;
@@ -28,7 +28,7 @@
 .playgroundSection {
   display: flex;
   flex-direction: column;
-  width: 400px;
+  flex: 1;
   height: 100%;
   background-color: var(--color-bg-primary);
   overflow: hidden;

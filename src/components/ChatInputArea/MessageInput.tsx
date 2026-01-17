@@ -2,8 +2,9 @@ import React from "react";
 import {
   MicrophoneIcon,
   GlobeIcon,
-  SendIcon,
   VolumeIcon,
+  PlusIcon,
+  SendIcon,
 } from "@/assets/icons";
 import styles from "./ChatInputArea.module.css";
 
@@ -32,21 +33,22 @@ export const MessageInput: React.FC<MessageInputProps> = ({
         />
         <div className={styles.inputActions}>
           <div className={styles.leftActions}>
-            <button className={styles.iconButton}>
-              <MicrophoneIcon />
+            <button className={styles.plusButton}>
+              <PlusIcon width={20} height={20} />
             </button>
-            <button className={styles.iconButton}>
+            <button className={styles.languageButton}>
               <GlobeIcon />
               <span className={styles.actionText}>English</span>
             </button>
           </div>
           <div className={styles.rightActions}>
-            <button className={styles.iconButton}>
+            <button className={styles.plusButton}>
               <VolumeIcon />
             </button>
-            <button className={styles.iconButton}>
+            <button className={styles.plusButton}>
               <MicrophoneIcon />
             </button>
+
             <button className={styles.sendButton} onClick={onSend}>
               <SendIcon />
             </button>

@@ -36,3 +36,18 @@
   border: 1px solid #5C5F65;
   color: #C0C0C0;
 }
+
+.collapsedToggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: opacity 0.2s;
+}
+
+.collapsedToggle:hover {
+  opacity: 0.8;
+}
