@@ -43,7 +43,7 @@ export const Sidebar: React.FC = () => {
       className={`${styles.sidebar} ${isCollapsed ? styles.collapsed : ""}`}
     >
       <div className={styles.logoSection}>
-        <LogoIcon width={24} height={24} />
+        <LogoIcon className={styles.logo} width={24} height={24} />
         {!isCollapsed && (
           <img
             className={styles.fullLogo}

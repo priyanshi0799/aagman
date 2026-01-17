@@ -33,7 +33,7 @@
   display: flex;
   flex-direction: column;
   align-self: stretch;
-  gap: 8px;
+  gap: 6px;
   padding: 24px 24px 0px;
   flex: 1;
   transition: padding 0.3s ease-in-out;
@@ -61,7 +61,6 @@
 .fullLogo {
   width: 75px;
   height: 20px;
-  margin-left: 6px;
   transition: opacity 0.2s ease-in-out;
 }
 
@@ -98,4 +97,8 @@
 .collapsed .logoSection {
   justify-content: center;
   padding: 20px 12px;
+}
+
+.logo {
+  margin-left: 6px;
 }

@@ -21,6 +21,13 @@ export const MessageInput: React.FC<MessageInputProps> = ({
   onSend,
   placeholder = "E.g. Buy 100 TCS at ₹3500, SL ₹3480...",
 }) => {
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      onSend?.();
+    }
+  };
+
   return (
     <div className={styles.inputGroup}>
       <div className={styles.mainInputField}>
@@ -28,6 +35,7 @@ export const MessageInput: React.FC<MessageInputProps> = ({
           type="text"
           value={value}
           onChange={(e) => onChange(e.target.value)}
+          onKeyPress={handleKeyPress}
           placeholder={placeholder}
           className={styles.messageInput}
         />

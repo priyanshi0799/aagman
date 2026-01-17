@@ -1,0 +1,717 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background-color: #1a1a1a;
+  border-radius: 16px;
+  max-width: 85vw;
+  max-height: 90vh;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid #3a3a3a;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-height: 90vh;
+  overflow: hidden;
+}
+
+.scrollableContent {
+  flex: 1;
+  overflow: hidden;
+  padding: 24px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 20px 24px;
+  background-color: #2a2a2a;
+  flex-shrink: 0;
+}
+
+.headerTitle {
+  font-family: Inter;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 24px;
+  color: #ffffff;
+  margin: 0;
+}
+
+.tradeBadge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+}
+
+.activeDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #ff843d;
+}
+
+.tradeActiveText {
+  font-family: Inter;
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 14px;
+  color: #ff843d;
+}
+
+.closeButton {
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s;
+}
+
+.closeButton:hover {
+  opacity: 0.7;
+}
+
+.infoSection {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  background-color: #2a2a2a;
+  border-radius: 16px;
+}
+
+.topRow {
+  display: flex;
+  gap: 8px;
+}
+
+.leftColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
+}
+
+.description {
+  font-family: Inter;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  color: #ffffff;
+  margin: 0;
+}
+
+.stockInfo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.stockLogo {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.stockDetails {
+  display: flex;
+  flex-direction: column;
+}
+
+.stockName {
+  font-family: Inter;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  color: #ffffff;
+}
+
+.stockExchange {
+  font-family: Inter;
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 12px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.rightColumn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 16px;
+  flex: 1;
+}
+
+.dateTime {
+  font-family: Inter;
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 12px;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0;
+}
+
+.badges {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.buyBadge {
+  background-color: rgba(240, 249, 255, 0.08);
+  color: #29a8ec;
+  padding: 2px 6px;
+  border-radius: 8px;
+  font-family: Inter;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  text-align: center;
+}
+
+.sellBadge {
+  background-color: rgba(255, 69, 58, 0.15);
+  color: #ff453a;
+  padding: 2px 6px;
+  border-radius: 8px;
+  font-family: Inter;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  text-align: center;
+}
+
+.brokerBadge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px;
+  height: 22px;
+  background-color: rgba(248, 249, 252, 0.08);
+  border-radius: 8px;
+}
+
+.brokerLogo {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+}
+
+.brokerName {
+  font-family: Inter;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  color: #bcbcbc;
+  text-align: center;
+}
+
+.bottomRow {
+  display: flex;
+  gap: 8px;
+}
+
+.strategySection {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  flex: 1;
+}
+
+.strategyIcon {
+  color: #ffffff;
+  flex-shrink: 0;
+}
+
+.strategyContent {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.strategyLabel {
+  font-family: Inter;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  color: #aab7d0;
+}
+
+.strategyText {
+  font-family: Inter;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  color: #f4f6fa;
+}
+
+.pricesSection {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 394px;
+}
+
+.priceBox {
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  flex: 1;
+}
+
+.priceLabel {
+  font-family: Inter;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 20px;
+  color: #c1c1c1;
+}
+
+.priceValue {
+  font-family: Inter;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 20px;
+  color: #ffffff;
+}
+
+.priceDivider {
+  width: 1px;
+  height: 46px;
+  background-color: #313131;
+}
+
+.flowContainer {
+  position: relative;
+  height: 700px;
+}
+
+.flowContainer > div {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.flowContainer :global(.react-flow__edges) {
+  z-index: 1;
+}
+
+.flowContainer :global(.react-flow__nodes) {
+  z-index: 2;
+}
+
+.flowContainer :global(.react-flow__edge) {
+  pointer-events: all;
+  z-index: 1;
+}
+
+.flowContainer :global(.react-flow__edge-path) {
+  stroke-dasharray: 5 5 !important;
+}
+
+.flowContainer :global(.react-flow__edge-textbg) {
+  fill: #2a2a2a !important;
+  fill-opacity: 1 !important;
+  rx: 16px !important;
+  ry: 20px !important;
+}
+
+.flowContainer :global(.react-flow__edge-text) {
+  fill: #ffffff !important;
+  font-family: Inter, sans-serif !important;
+  font-weight: 600 !important;
+  font-size: 11px !important;
+  text-transform: uppercase !important;
+  dominant-baseline: central !important;
+  text-anchor: middle !important;
+  letter-spacing: 0.02em !important;
+}
+
+.flowContainer :global(.react-flow__edge-textwrapper) {
+  pointer-events: none !important;
+}
+
+.flowContainer :global(.react-flow__edge .react-flow__edge-text) {
+  pointer-events: none !important;
+}
+
+.flowContainer :global(.react-flow__edgelabel) {
+  background: transparent !important;
+}
+
+.flowContainer :global(.react-flow__attribution) {
+  display: none !important;
+}
+
+.flowContainer :global(.react-flow__pane) {
+  cursor: grab;
+}
+
+.flowContainer :global(.react-flow__pane:active) {
+  cursor: grabbing;
+}
+
+.flowContainer :global(.react-flow__handle) {
+  opacity: 0 !important;
+  pointer-events: none;
+  width: 1px !important;
+  height: 1px !important;
+  border: none !important;
+  background: transparent !important;
+  min-width: 1px !important;
+  min-height: 1px !important;
+}
+
+.flowContainer :global(.react-flow__handle-left) {
+  left: 0 !important;
+}
+
+.flowContainer :global(.react-flow__handle-right) {
+  right: 0 !important;
+}
+
+.startLabel {
+  background-color: rgba(25, 226, 153, 0.08);
+  border: 1px solid #43556e;
+  color: #19e299;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-family: Inter;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.endLabel {
+  background-color: rgba(25, 226, 153, 0.08);
+  border: 1px solid #43556e;
+  color: #19e299;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-family: Inter;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.branchLabel {
+  position: absolute;
+  background-color: #2a2a2a;
+  border-radius: 16px;
+  padding: 9px;
+  font-family: Inter;
+  font-weight: 600;
+  font-size: 8px;
+  line-height: 11px;
+  text-align: center;
+  color: #ffffff;
+  z-index: 3;
+}
+
+.card {
+  width: 320px;
+  background-color: #2a2a2a;
+  border-radius: 16px;
+  box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+}
+
+.cardCompleted {
+  border: 0.5px solid rgba(25, 226, 153, 0.4);
+}
+
+.cardRunning {
+  border: 0.5px solid rgba(255, 132, 61, 0.4);
+}
+
+.cardPending {
+  border: 0.5px solid transparent;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  background-color: #1d1d1d;
+  border-radius: 16px 16px 0 0;
+  color: #ffffff;
+}
+
+.cardTitle {
+  font-family: Inter;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  color: #f4f6fa;
+  margin: 0;
+}
+
+.cardBody {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px 16px 16px 16px;
+}
+
+.cardRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: Inter;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  color: #f4f6fa;
+  gap: 12px;
+}
+
+.cardStockRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  justify-content: space-between;
+}
+
+.cardStockRowLeft {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cardStockImg {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
+.cardStockName {
+  font-family: Inter;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  color: #ffffff;
+}
+
+.cardStockExchange {
+  font-family: Inter;
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 12px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.cardBuyBadge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #27ae60;
+
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  text-align: center;
+}
+
+.cardSellBadge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #ff453a;
+
+  font-family: Inter;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.protectsRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.miniLogo {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+}
+
+.statusBadge {
+  position: absolute;
+  top: -30px;
+  right: 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 6px;
+  border-radius: 8px;
+  font-family: Inter;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  text-align: center;
+}
+
+.cardCompleted .statusBadge {
+  background-color: rgba(12, 172, 106, 0.06);
+  color: #0cac6a;
+}
+
+.cardRunning .statusBadge {
+  background-color: rgba(255, 132, 61, 0.06);
+  color: #ff843d;
+}
+
+.cardPending .statusBadge {
+  background-color: rgba(172, 182, 240, 0.06);
+  color: #acb6f0;
+}
+
+.spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 132, 61, 0.3);
+  border-top-color: #ff843d;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.progressBar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+  align-self: flex-end;
+  justify-content: flex-end;
+}
+
+.progressBarTrack {
+  display: flex;
+  gap: 1px;
+  /* align-items: center; */
+  /* justify-content: flex-start; */
+}
+
+.progressText {
+  font-family: Inter;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  color: #19e299;
+  white-space: nowrap;
+}
+
+.textError {
+  color: #fe506b !important;
+}
+
+.textSuccess {
+  color: #19e299 !important;
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 20px 24px 24px 24px;
+  border-top: 1px solid #3a3a3a;
+  flex-shrink: 0;
+  background-color: #2a2a2a;
+}
+
+.btnPrimary,
+.btnSecondary {
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btnPrimary {
+  background-color: #212121;
+  color: #fff;
+  border: 1px solid #3a3a3a;
+}
+
+.btnPrimary:hover {
+  background-color: #15c77e;
+}
+
+.btnSecondary {
+  background-color: transparent;
+  color: #c0c0c0;
+  border: 1px solid transparent;
+}
+
+.btnSecondary:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+.flowContainer :global(.react-flow__edge-path) {
+  pointer-events: none;
+}
+
+.flowContainer :global(.react-flow__edge) {
+  z-index: 1;
+}
+
+.flowContainer :global(.react-flow__node) {
+  z-index: 2;
+}
+
+.parallelogram {
+  width: 12px;
+  height: 6px;
+  background: transparent;
+  border: 1px solid #19e299;
+  opacity: 0.85;
+  clip-path: polygon(
+    10% 0%,
+    /* top-left shifted right */ 100% 0%,
+    /* top-right */ 90% 100%,
+    /* bottom-right shifted left */ 0% 100% /* bottom-left */
+  );
+}
+
+.parallelogramFilled {
+  width: 12px;
+  height: 6px;
+  background: #19e299;
+  opacity: 0.85;
+  border: 1px solid #19e299;
+  clip-path: polygon(
+    4% 0%,
+    /* top-left shifted right */ 100% 0%,
+    /* top-right */ 96% 100%,
+    /* bottom-right shifted left */ 0% 100% /* bottom-left */
+  );
+}
