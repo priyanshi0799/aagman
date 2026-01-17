@@ -81,14 +81,11 @@
   border: none;
   cursor: pointer;
   padding: 0;
-  
 }
 
 .closeButtonIcon {
   color: #98a2b3;
 }
-
-
 
 .infoSection {
   display: flex;
@@ -346,6 +343,21 @@
   backface-visibility: hidden;
 }
 
+.flowContainer :global(.react-flow__edges svg > g) {
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+/* Force Safari to render SVG properly */
+.flowContainer :global(svg) {
+  position: relative;
+  z-index: 1;
+}
+
+.flowContainer :global(svg g) {
+  will-change: transform;
+}
+
 /* Ensure SVG defs (markers) are properly rendered in Safari */
 .flowContainer :global(.react-flow__edges svg defs) {
   display: block;
@@ -360,10 +372,22 @@
   .flowContainer :global(.react-flow__edge-path) {
     stroke-linecap: round;
     stroke-linejoin: round;
+    /* Force Safari to render the path properly */
+    vector-effect: non-scaling-stroke;
   }
   
   .flowContainer :global(marker path) {
     shape-rendering: geometricPrecision;
+    vector-effect: non-scaling-stroke;
+  }
+  
+  .flowContainer :global(marker) {
+    overflow: visible !important;
+  }
+  
+  /* Ensure markers are rendered */
+  .flowContainer :global(.react-flow__edges) {
+    isolation: isolate;
   }
 }
 
