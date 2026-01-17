@@ -304,6 +304,12 @@
 .flowContainer {
   position: relative;
   height: 700px;
+  /* Safari SVG container fix */
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  perspective: 1000px;
 }
 
 .flowContainer > div {
@@ -322,10 +328,52 @@
 .flowContainer :global(.react-flow__edge) {
   pointer-events: all;
   z-index: 1;
+  /* Safari edge rendering fix */
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+/* Safari marker (arrowhead) fix */
+.flowContainer :global(.react-flow__edge marker) {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+.flowContainer :global(.react-flow__edges svg) {
+  overflow: visible !important;
+  shape-rendering: geometricPrecision;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+/* Ensure SVG defs (markers) are properly rendered in Safari */
+.flowContainer :global(.react-flow__edges svg defs) {
+  display: block;
+}
+
+.flowContainer :global(.react-flow__edges svg defs marker) {
+  overflow: visible;
+}
+
+/* Safari specific fix for broken arrows */
+@supports (-webkit-appearance: none) {
+  .flowContainer :global(.react-flow__edge-path) {
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  
+  .flowContainer :global(marker path) {
+    shape-rendering: geometricPrecision;
+  }
 }
 
 .flowContainer :global(.react-flow__edge-path) {
   stroke-dasharray: 5 5 !important;
+  /* Safari SVG rendering fixes */
+  shape-rendering: geometricPrecision;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  will-change: auto;
 }
 
 .flowContainer :global(.react-flow__edge-textbg) {
