@@ -521,15 +521,27 @@ export const TradeMonitoringModal: React.FC<TradeMonitoringModalProps> = ({
           edge.id === "e-start-riskValidation" ||
           edge.id === "e-riskValidation-monitoring";
 
-        // Add label data for specific edges
-        const edgeData =
-          edge.label === "PROFIT TARGET" || edge.label === "PROTECTION"
-            ? {
-                label: edge.label,
-                padding: 9,
-                paddingLeft: 12,
-              }
-            : undefined;
+        // Add label data for specific edges with custom offsets
+        let edgeData = undefined;
+        if (edge.label === "PROFIT TARGET") {
+          edgeData = {
+            label: edge.label,
+            paddingTop: 9,
+            paddingBottom: 9,
+            paddingLeft: 16,
+            paddingRight: 16,
+            offsetY: -680, // Position above the curved path
+          };
+        } else if (edge.label === "PROTECTION") {
+          edgeData = {
+            label: edge.label,
+            paddingTop: 9,
+            paddingBottom: 9,
+            paddingLeft: 16,
+            paddingRight: 16,
+            offsetY: -700, // Position below the curved path
+          };
+        }
 
         // Use badge type for labeled edges
         const edgeType =
