@@ -180,7 +180,6 @@ export const mockFlowEdges: FlowEdgeData[] = [
     sourceHandle: "toProfitMonitoring",
     target: "monitoringProfit",
     type: "smoothstep",
-    label: "PROFIT TARGET",
   },
   {
     id: "e-monitoringProfit-execution",
@@ -188,6 +187,7 @@ export const mockFlowEdges: FlowEdgeData[] = [
     sourceHandle: "toExecution",
     target: "execution",
     type: "smoothstep",
+    label: "PROFIT TARGET",
   },
   {
     id: "e-entryExecution-risk",
